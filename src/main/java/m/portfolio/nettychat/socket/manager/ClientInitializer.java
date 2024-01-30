@@ -9,7 +9,7 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
-import m.portfolio.nettychat.socket.config.CustomLengthFieldBasedFrameDecoder;
+import io.netty.handler.codec.LengthFieldPrepender;
 import m.portfolio.nettychat.socket.handler.ClientHandler;
 import org.springframework.stereotype.Component;
 
@@ -28,8 +28,11 @@ public class ClientInitializer extends BaseSocketInitializer {
                     @Override
                     public void initChannel(SocketChannel ch) throws Exception {
                         ChannelPipeline p = ch.pipeline();
-                        p.addLast(CustomLengthFieldBasedFrameDecoder.getInstance());
+                        p.addLast(new LengthFieldBasedFrameDecoder(
+                                Integer.MAX_VALUE, 0, 4, 0, 4
+                        ));
                         p.addLast(new ClientHandler());
+//                        p.addLast(new LengthFieldPrepender(4));
                     }
                 });
 
