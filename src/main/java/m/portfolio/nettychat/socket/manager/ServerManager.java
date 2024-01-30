@@ -1,4 +1,4 @@
-package m.portfolio.nettychat.socket;
+package m.portfolio.nettychat.socket.manager;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
@@ -8,17 +8,20 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.codec.FixedLengthFrameDecoder;
+import lombok.extern.slf4j.Slf4j;
 import m.portfolio.nettychat.socket.handler.ServerHandler;
 import org.springframework.stereotype.Component;
 
 @Component
+@Slf4j
 public class ServerManager extends BaseSocketManager {
     EventLoopGroup bossGroup = null;
     EventLoopGroup workerGroup = null;
     private final int nBossThread = 1;
 
     @Override
-    public void setup() throws InterruptedException {
+    public void start() throws InterruptedException {
         this.bossGroup = new NioEventLoopGroup(nBossThread);
         this.workerGroup = new NioEventLoopGroup();
 
@@ -29,13 +32,14 @@ public class ServerManager extends BaseSocketManager {
                     @Override
                     protected void initChannel(SocketChannel ch) throws Exception {
                         ChannelPipeline p = ch.pipeline();
+                        p.addLast(new FixedLengthFrameDecoder(4));
                         p.addLast(new ServerHandler()); //1
                     }
                 });
 
         ChannelFuture f = b.bind(8888).sync();
 
-        System.out.println("서버시작");
+        log.info("server is setup");
 
         f.channel().closeFuture().sync();
 

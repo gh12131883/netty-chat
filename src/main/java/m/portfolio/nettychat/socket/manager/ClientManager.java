@@ -1,4 +1,4 @@
-package m.portfolio.nettychat.socket;
+package m.portfolio.nettychat.socket.manager;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
@@ -8,6 +8,7 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.handler.codec.FixedLengthFrameDecoder;
 import m.portfolio.nettychat.socket.handler.ClientHandler;
 import org.springframework.stereotype.Component;
 
@@ -16,7 +17,7 @@ public class ClientManager extends BaseSocketManager {
     private EventLoopGroup group = null;
 
     @Override
-    public void setup() throws InterruptedException {
+    public void start() throws InterruptedException {
         this.group = new NioEventLoopGroup();
 
         Bootstrap b = new Bootstrap();
@@ -26,6 +27,7 @@ public class ClientManager extends BaseSocketManager {
                     @Override
                     public void initChannel(SocketChannel ch) throws Exception {
                         ChannelPipeline p = ch.pipeline();
+                        p.addLast(new FixedLengthFrameDecoder(4));
                         p.addLast(new ClientHandler());
                     }
                 });

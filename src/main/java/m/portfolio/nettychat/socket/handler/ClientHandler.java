@@ -38,10 +38,10 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
 
     }
 
-    @Override
-    public void channelReadComplete(ChannelHandlerContext ctx)   { // (5)
-        ctx.close(); // (6)
-    }
+//    @Override
+//    public void channelReadComplete(ChannelHandlerContext ctx)   { // (5)
+//        ctx.close(); // (6)
+//    }
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause)   {
