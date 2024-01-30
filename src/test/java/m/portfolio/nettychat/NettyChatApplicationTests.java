@@ -1,7 +1,7 @@
 package m.portfolio.nettychat;
 
-import m.portfolio.nettychat.socket.TestClientManager;
-import m.portfolio.nettychat.socket.TestServerManager;
+import m.portfolio.nettychat.socket.ClientManager;
+import m.portfolio.nettychat.socket.ServerManager;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,9 +12,9 @@ import java.util.concurrent.Executors;
 @SpringBootTest
 class NettyChatApplicationTests {
 	@Autowired
-	private TestServerManager testServerManager;
+	private ServerManager serverManager;
 	@Autowired
-	private TestClientManager testClientManager;
+	private ClientManager clientManager;
 
 	private ExecutorService executorService = Executors.newFixedThreadPool(2);
 
@@ -22,18 +22,18 @@ class NettyChatApplicationTests {
 	void contextLoads() throws InterruptedException {
 		executorService.submit(() -> {
 			try {
-				testServerManager.start();
+				serverManager.start();
 			} catch (InterruptedException e) {
 				throw new RuntimeException(e);
 			}
 		});
 
-		testClientManager.start();
+		clientManager.start();
 
 		executorService.shutdown();
 
-		testServerManager.shutdown();
-		testClientManager.shutdown();
+		serverManager.shutdown();
+		clientManager.shutdown();
 	}
 
 }

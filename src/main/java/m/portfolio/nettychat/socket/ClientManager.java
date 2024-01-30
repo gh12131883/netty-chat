@@ -12,7 +12,7 @@ import m.portfolio.nettychat.socket.handler.ClientHandler;
 import org.springframework.stereotype.Component;
 
 @Component
-public class TestClientManager extends BaseSocketManager {
+public class ClientManager extends BaseSocketManager {
     private EventLoopGroup group = null;
 
     @Override

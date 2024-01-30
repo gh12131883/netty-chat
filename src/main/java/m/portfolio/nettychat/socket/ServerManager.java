@@ -12,7 +12,7 @@ import m.portfolio.nettychat.socket.handler.ServerHandler;
 import org.springframework.stereotype.Component;
 
 @Component
-public class TestServerManager extends BaseSocketManager {
+public class ServerManager extends BaseSocketManager {
     EventLoopGroup bossGroup = null;
     EventLoopGroup workerGroup = null;
     private final int nBossThread = 1;
