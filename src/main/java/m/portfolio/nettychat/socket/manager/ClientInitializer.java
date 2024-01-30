@@ -8,12 +8,13 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.handler.codec.FixedLengthFrameDecoder;
+import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
+import m.portfolio.nettychat.socket.config.CustomLengthFieldBasedFrameDecoder;
 import m.portfolio.nettychat.socket.handler.ClientHandler;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ClientManager extends BaseSocketManager {
+public class ClientInitializer extends BaseSocketInitializer {
     private EventLoopGroup group = null;
 
     @Override
@@ -27,7 +28,7 @@ public class ClientManager extends BaseSocketManager {
                     @Override
                     public void initChannel(SocketChannel ch) throws Exception {
                         ChannelPipeline p = ch.pipeline();
-                        p.addLast(new FixedLengthFrameDecoder(4));
+                        p.addLast(CustomLengthFieldBasedFrameDecoder.getInstance());
                         p.addLast(new ClientHandler());
                     }
                 });

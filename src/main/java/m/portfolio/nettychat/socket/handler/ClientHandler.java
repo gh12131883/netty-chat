@@ -4,23 +4,27 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import lombok.extern.slf4j.Slf4j;
+import m.portfolio.nettychat.socket.converter.ByteConverter;
 
 import java.nio.charset.Charset;
 
+@Slf4j
 public class ClientHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelActive(ChannelHandlerContext ctx) { // (1)
         String sendMessage = "Hello Netty";
 
         ByteBuf msgBuffer = Unpooled.buffer();
-        msgBuffer.writeBytes(sendMessage.getBytes());
+        msgBuffer.writeBytes(ByteConverter.convert(sendMessage));
+//        msgBuffer.writeBytes(sendMessage.getBytes());
 
         StringBuilder builder = new StringBuilder();
         builder.append("Client 전송한 문자열[");
         builder.append(sendMessage);
         builder.append("]");
 
-        System.out.println(builder.toString());
+        log.info(builder.toString());
 
         ctx.writeAndFlush(msgBuffer);  // (2) 중요
     }
@@ -34,7 +38,7 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
         builder.append(readMessage);
         builder.append("]");
 
-        System.out.println(builder.toString());
+        log.info(builder.toString());
 
     }
 

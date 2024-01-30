@@ -8,14 +8,15 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.handler.codec.FixedLengthFrameDecoder;
+import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import lombok.extern.slf4j.Slf4j;
+import m.portfolio.nettychat.socket.config.CustomLengthFieldBasedFrameDecoder;
 import m.portfolio.nettychat.socket.handler.ServerHandler;
 import org.springframework.stereotype.Component;
 
 @Component
 @Slf4j
-public class ServerManager extends BaseSocketManager {
+public class ServerInitializer extends BaseSocketInitializer {
     EventLoopGroup bossGroup = null;
     EventLoopGroup workerGroup = null;
     private final int nBossThread = 1;
@@ -32,7 +33,7 @@ public class ServerManager extends BaseSocketManager {
                     @Override
                     protected void initChannel(SocketChannel ch) throws Exception {
                         ChannelPipeline p = ch.pipeline();
-                        p.addLast(new FixedLengthFrameDecoder(4));
+                        p.addLast(CustomLengthFieldBasedFrameDecoder.getInstance());
                         p.addLast(new ServerHandler()); //1
                     }
                 });

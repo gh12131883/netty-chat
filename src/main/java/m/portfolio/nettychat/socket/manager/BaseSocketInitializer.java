@@ -2,9 +2,7 @@ package m.portfolio.nettychat.socket.manager;
 
 import jakarta.annotation.PreDestroy;
 
-public abstract class BaseSocketManager {
-//    public abstract void start() throws InterruptedException;
-
+public abstract class BaseSocketInitializer {
     public void initialize() throws InterruptedException {
         try{
             this.start();
