@@ -1,7 +1,7 @@
 package m.portfolio.nettychat;
 
-import m.portfolio.nettychat.socket.manager.ClientInitializer;
-import m.portfolio.nettychat.socket.manager.ServerInitializer;
+import m.portfolio.nettychat.socket.initializer.ClientInitializer;
+import m.portfolio.nettychat.socket.initializer.ServerInitializer;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

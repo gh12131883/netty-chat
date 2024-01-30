@@ -1,4 +1,4 @@
-package m.portfolio.nettychat.socket.manager;
+package m.portfolio.nettychat.socket.initializer;
 
 import jakarta.annotation.PreDestroy;
 
