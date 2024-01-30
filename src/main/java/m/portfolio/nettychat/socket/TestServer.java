@@ -9,35 +9,42 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import m.portfolio.nettychat.socket.handler.ServerHandler;
+import org.springframework.stereotype.Component;
 
+@Component
 public class TestServer extends BaseSocket{
+    EventLoopGroup bossGroup = null;
+    EventLoopGroup workerGroup = null;
+    private final int nBossThread = 1;
 
     @Override
-    public void start() throws InterruptedException {
-        EventLoopGroup bossGroup = new NioEventLoopGroup(1);
-        EventLoopGroup workerGroup = new NioEventLoopGroup();
-        try{
-            ServerBootstrap b = new ServerBootstrap();
-            b.group(bossGroup, workerGroup)
-                    .channel(NioServerSocketChannel.class)
-                    .childHandler(new ChannelInitializer<SocketChannel>() { // 4
-                        @Override
-                        protected void initChannel(SocketChannel ch) throws Exception {
-                            ChannelPipeline p = ch.pipeline();
-                            p.addLast(new ServerHandler()); //1
-                        }
-                    });
+    public void setup() throws InterruptedException {
+        this.bossGroup = new NioEventLoopGroup(nBossThread);
+        this.workerGroup = new NioEventLoopGroup();
 
-            ChannelFuture f = b.bind(8888).sync();
+        ServerBootstrap b = new ServerBootstrap();
+        b.group(bossGroup, workerGroup)
+                .channel(NioServerSocketChannel.class)
+                .childHandler(new ChannelInitializer<SocketChannel>() { // 4
+                    @Override
+                    protected void initChannel(SocketChannel ch) throws Exception {
+                        ChannelPipeline p = ch.pipeline();
+                        p.addLast(new ServerHandler()); //1
+                    }
+                });
 
-            System.out.println("서버시작");
+        ChannelFuture f = b.bind(8888).sync();
 
-            f.channel().closeFuture().sync();
+        System.out.println("서버시작");
 
+        f.channel().closeFuture().sync();
 
-        }finally {
-            workerGroup.shutdownGracefully();
-            bossGroup.shutdownGracefully();
-        }
+        this.shutdown();
+    }
+
+    @Override
+    public void shutdown() {
+        workerGroup.shutdownGracefully();
+        bossGroup.shutdownGracefully();
     }
 }
