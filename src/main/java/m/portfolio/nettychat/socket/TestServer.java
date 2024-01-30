@@ -8,9 +8,12 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import m.portfolio.nettychat.socket.handler.ServerHandler;
 
-public class EchoServer {
-    public static void main(String[] args) throws Exception {
+public class TestServer extends BaseSocket{
+
+    @Override
+    public void start() throws InterruptedException {
         EventLoopGroup bossGroup = new NioEventLoopGroup(1);
         EventLoopGroup workerGroup = new NioEventLoopGroup();
         try{
@@ -21,7 +24,7 @@ public class EchoServer {
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {
                             ChannelPipeline p = ch.pipeline();
-                            p.addLast(new EchoServerHandler()); //1
+                            p.addLast(new ServerHandler()); //1
                         }
                     });
 

@@ -1,4 +1,4 @@
-package m.portfolio.nettychat.socket;
+package m.portfolio.nettychat.socket.handler;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -7,7 +7,7 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 
 import java.nio.charset.Charset;
 
-public class EchoClientHandler extends ChannelInboundHandlerAdapter {
+public class ClientHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelActive(ChannelHandlerContext ctx) { // (1)
         String sendMessage = "Hello Netty";

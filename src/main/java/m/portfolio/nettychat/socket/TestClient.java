@@ -8,9 +8,11 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import m.portfolio.nettychat.socket.handler.ClientHandler;
 
-public class EchoClient {
-    public static void main(String[] args) throws Exception{
+public class TestClient extends BaseSocket{
+    @Override
+    public void start() throws InterruptedException {
         EventLoopGroup group = new NioEventLoopGroup();
 
         try{
@@ -21,7 +23,7 @@ public class EchoClient {
                         @Override
                         public void initChannel(SocketChannel ch) throws Exception {
                             ChannelPipeline p = ch.pipeline();
-                            p.addLast(new EchoClientHandler());
+                            p.addLast(new ClientHandler());
                         }
                     });
 
